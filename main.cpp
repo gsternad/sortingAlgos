@@ -1,6 +1,7 @@
 #include <random>
-#include <time.h>
+#include <ctime>
 #include <iostream>
+#include <chrono>
 
 // MEDIANO NAREDI
 
@@ -20,9 +21,14 @@ void menu() {
     std::cout << "13 ... MERGE SORT" << std::endl;
 }
 
+int inputNum(int& num) {
+    std::cin >> num;
+    return num;
+}
+
 void randomArray(int* arr, unsigned int size) {
     for(int i = 0; i < size; i++) {
-        arr[i] = rand()%101;
+        arr[i] = rand()% size;
     }
 }
 
@@ -49,18 +55,16 @@ void printArray(int* arr , unsigned int size) {
     std::cout << std::endl;
 }
 
-/*
 bool isSorted(int* arr, int bot, int top) {
     for(int i = bot; i < top-1; i++) {
-        if(arr[i] > arr[i+1]) {
-            return false;
-        }
-        else {
-            return true;
+        for(int j = i+1; j < top; j++) {
+            if(arr[i] > arr[j]) {
+                return false;
+            }
         }
     }
+    return true;
 }
-*/
 
 // namesto std::swap al pa da bi nardil "bubble" znotraj divide
 int swap(int* x, int* y) {
@@ -206,26 +210,35 @@ int main() {
     int selection = 0;
     bool running = true;
 
-    unsigned int size = 100;
+    int size = 100'000'000;
     auto* arr = new int[size] {0};
+
+    clock_t start;
+    clock_t end;
+    double duration;
 
     do {
         menu();
         std::cin >> selection;
         switch(selection) {
             case 1:
+                std::cout << "Enter a size of array:" << std::endl;
+                inputNum(size);
                 randomArray(arr, size);
                 break;
             case 2:
+                std::cout << "Enter a size of array:" << std::endl;
+                inputNum(size);
                 randomAscendingArray(arr, size);
                 break;
             case 3:
+                std::cout << "Enter a size of array:" << std::endl;
+                inputNum(size);
                 randomDescendingArray(arr, size);
                 break;
             case 4:
                 printArray(arr, size);
                 break;
-                /*
             case 5:
                 if(isSorted(arr, 0, size - 1)) {
                     std::cout << "Array is sorted." << std::endl;
@@ -234,27 +247,44 @@ int main() {
                     std::cout << "Array is not sorted." << std::endl;
                 }
                 break;
-                 */
             case 6:
+                start = clock();
                 quickSort(arr, 0, size - 1);
+                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+                std::cout << duration << std::endl;
                 break;
             case 7:
                 quickSortWithMedian(arr, 0, size - 1);
                 break;
             case 8:
+                start = clock();
                 selectionSort(arr, size);
+                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+                std::cout << duration << std::endl;
                 break;
             case 9:
+                start = clock();
                 countingSort(arr, size);
+                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+                std::cout << duration << std::endl;
                 break;
             case 10:
+                start = clock();
                 romanSort(arr, size);
+                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+                std::cout << duration << std::endl;
                 break;
             case 11:
+                start = clock();
                 bubbleSort(arr, size);
+                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+                std::cout << duration << std::endl;
                 break;
             case 12:
+                start = clock();
                 insertionSort(arr, size);
+                duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+                std::cout << duration << std::endl;
                 break;
             case 13:
                 break;
